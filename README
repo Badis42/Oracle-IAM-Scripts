@@ -1,7 +1,6 @@
 A collection of shell scripts used to prepare a Redhat or Oracle Linux image to host Oracle Identity Management software. 
 
 
-
 Contents:
 installscripts/  scripts to prepare Oracle Linux for the database and Weblogic middleware 
 
@@ -14,3 +13,8 @@ Contributors:
 Chris Johnson
 Art Mattson 
 Warren Strange
+
+
+Changes:
+
+Moved to git organization 
