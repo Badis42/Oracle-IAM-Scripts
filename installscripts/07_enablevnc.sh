@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -e /etc/sysconfig/vncservers.bak ]; then
     echo /etc/hsysconfig/vncservers already exists

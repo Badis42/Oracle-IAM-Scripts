@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # this script does a few things:
 # 1 - checks to make sure you have a real name other than localhost.localdomain

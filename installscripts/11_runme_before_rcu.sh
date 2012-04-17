@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ORAENV_ASK=NO
 ORACLE_SID=orcl

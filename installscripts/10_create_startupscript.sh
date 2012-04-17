@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #echo "Don't forget to update /etc/oratab and change the last N to a Y"
 echo "Updating /etc/oratab"

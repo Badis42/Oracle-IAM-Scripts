@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # mkdir -p /u01/app/
 # chown -R oracle:oinstall /u01/app/

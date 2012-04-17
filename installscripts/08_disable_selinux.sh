@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 FILE=/etc/selinux/config
 BACKUP=$FILE.bak
