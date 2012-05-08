@@ -42,6 +42,11 @@ if [ "$OS_VER" == "5" ]; then
     # this installs all of the dependencies for the DB
     yum -y install oracle-validated
 elif [ $"$OS_VER" == "6" ]; then
+
+    # you may also need the 32 bit flavors for some products
+    # I found this out when installing OID 11.1.1.6 on OL 6
+    yum -y install glibc-devel.i686
+
     yum -y install tigervnc-server
 
     yum -y install compat-libstdc++-33
