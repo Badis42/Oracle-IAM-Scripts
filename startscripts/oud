@@ -11,7 +11,6 @@
 # Please Note that this was written for my own purposes. It may or may
 # not work in your environment.
 
-
 # When you install this scroll down and edit the environment variables
 # below to match up with your environment.
 
@@ -19,6 +18,9 @@
 # Set the path to the Oracle Unified Directory instance to manage
 INSTALL_ROOT="/home/oracle/Oracle/Middleware/asinst_1/OUD"
 export INSTALL_ROOT
+
+# who does OUD run as?
+OUDOWNER=oracle
 
 DIRLISTENPORT=1389
 DIRBASE="dc=oracleateam,dc=com"
@@ -75,7 +77,7 @@ ldapping()
 
 if [ "$USER" == "root" ] ; then
     # if we're running as root we will need to su to stop or start the server
-    SUCOMMAND="/bin/su - oracle -- "
+    SUCOMMAND="/bin/su - $OUDOWNER -- "
 else
     # otherwise we don't need a su command
     SUCOMMAND=""
@@ -112,6 +114,9 @@ unregister() {
 }
 
 # Determine what action should be performed on the server
+
+# TODO: add checks to make sure you're start/stop/restarting as either root or $OUDOWNER
+
 case "${1}" in
 start)
   $SUCOMMAND "${INSTALL_ROOT}/bin/start-ds" --quiet
@@ -161,11 +166,12 @@ ping)
 
   echo "Usage (as root):"
   echo "  $0 {start|stop|restart|install|register}"
-  echo "Usage (as $ORACLE_OWNER):"
-  echo "  $0 {start|stop|restart|shell|status|ping|modify}"
+  echo "Usage (as $OUDOWNER):"
+  echo "  $0 {start|stop|restart}"
+  echo "Usage (as anyone):"
+  echo "  $0 {shell|status|ping|modify}"
   echo "  $0 search <search string>"
   echo "  $0 search <search base> <search string>"
   exit 1
   ;;
 esac
-
