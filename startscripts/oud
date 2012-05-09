@@ -14,11 +14,16 @@ export INSTALL_ROOT
 # Determine what action should be performed on the server
 case "${1}" in
 install)
-  echo Copying $0 to /etc/init.d
-  cp $0 /etc/init.d
-  echo Running chkconfig
-  chkconfig --add oud
-  chkconfig --list oud
+  if [ "$USER" == "root" ] ; then
+      echo Copying $0 to /etc/init.d
+      cp $0 /etc/init.d
+      echo Running chkconfig
+      chkconfig --add oud
+      chkconfig --list oud
+  else
+      echo run \"$0 install\" as root to install the rc script in /etc/init.d
+      echo and set OUD to start at system boot
+  fi
   ;;
 start)
   /bin/su - oracle -- "${INSTALL_ROOT}/bin/start-ds" --quiet
@@ -33,7 +38,7 @@ restart)
   exit ${?}
   ;;
 *)
-  echo "Usage:  $0 { start | stop | restart }"
+  echo "Usage:  $0 { start | stop | restart | install }"
   exit 1
   ;;
 esac
