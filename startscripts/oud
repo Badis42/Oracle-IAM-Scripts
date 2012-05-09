@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
+# 
+
+# chkconfig: 345 90 30
+# description: Oracle Unified Directory startup script
+
+
+# Set the path to the Oracle Unified Directory instance to manage
+INSTALL_ROOT="/home/oracle/Oracle/Middleware/asinst_1/OUD"
+export INSTALL_ROOT
+
+# Determine what action should be performed on the server
+case "${1}" in
+install)
+  echo Copying $0 to /etc/init.d
+  cp $0 /etc/init.d
+  echo Running chkconfig
+  chkconfig --add oud
+  chkconfig --list oud
+  ;;
+start)
+  /bin/su - oracle -- "${INSTALL_ROOT}/bin/start-ds" --quiet
+  exit ${?}
+  ;;
+stop)
+  /bin/su - oracle -- "${INSTALL_ROOT}/bin/stop-ds" --quiet
+  exit ${?}
+  ;;
+restart)
+  /bin/su - oracle -- "${INSTALL_ROOT}/bin/stop-ds" --restart --quiet
+  exit ${?}
+  ;;
+*)
+  echo "Usage:  $0 { start | stop | restart }"
+  exit 1
+  ;;
+esac
+
