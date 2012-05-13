@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Copyright (c) 2012, Oracle and/or its affiliates. All rights reserved.
 # 
@@ -51,19 +51,19 @@ search()
     echo "Searching directory."
     echo "  base: $SEARCHBASE"
     echo "string: $SEARCHSTRING"
-    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $SEARCHBASE $SEARCHSTRING
+    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $SEARCHBASE $SEARCHSTRING
 }
 
 modify()
 {
     echo "Executing LDAP modify"
-    ldapmodify -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -a -c
+    ldapmodify -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -a -c
 }
 
 ldapping()
 {
     echo "Searching LDAP directory"
-    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $DIRBASE $DIRADMINDN dn
+    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $DIRBASE $DIRADMINDN dn
     ret=$?
     
     if [ "$ret" -ne "0" ]; then
@@ -148,6 +148,10 @@ shell)
   echo Starting shell...
   bash -
   ;;
+dsconfig)
+  echo Starting dsconfig
+  dsconfig
+  ;;
 search)
   echo LDAP Search selected from command line
   search $2 $3
@@ -167,7 +171,7 @@ ping)
   echo "Usage (as root):"
   echo "  $0 {start|stop|restart|install|register}"
   echo "Usage (as $OUDOWNER):"
-  echo "  $0 {start|stop|restart}"
+  echo "  $0 {start|stop|restart|dsconfig}"
   echo "Usage (as anyone):"
   echo "  $0 {shell|status|ping|modify}"
   echo "  $0 search <search string>"
