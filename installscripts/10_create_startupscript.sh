@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#echo "Don't forget to update /etc/oratab and change the last N to a Y"
+. settings.sh
+
 echo "Updating /etc/oratab"
 cp -p /etc/oratab /etc/oratab.bak
 sed -e 's/:N$/:Y/' /etc/oratab.bak > /etc/oratab
@@ -31,8 +32,8 @@ cat > /etc/init.d/oracle <<EOF
 
 
 
-ORACLE_OWNER="oracle"
-ORACLE_HOME="/home/oracle/database/product/11.2.0/dbhome_1"
+ORACLE_OWNER="$ORA_USER"
+ORACLE_HOME="$ORADB_LOCATION/product/11.2.0/dbhome_1"
 
 case "\$1" in
 start)
