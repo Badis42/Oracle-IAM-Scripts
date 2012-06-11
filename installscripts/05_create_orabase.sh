@@ -1,20 +1,19 @@
 #!/bin/bash
 
-# mkdir -p /u01/app/
-# chown -R oracle:oinstall /u01/app/
-# chmod -R 775 /u01/app/
+. settings.sh
 
-mkdir /home/oracle/database
-chown -R oracle:oinstall /home/oracle/database
-chmod -R 775 /home/oracle/database
+mkdir $ORADB_LOCATION
+chown -R $ORA_USER:oinstall $ORADB_LOCATION
+chmod -R 775 $ORADB_LOCATION
 
-cat >> /home/oracle/.bash_profile <<EOF
+cat >> $USER_HOME/.bash_profile <<EOF
 umask 022
-ORACLE_BASE=/home/oracle/database
+ORACLE_BASE=$ORADB_LOCATION
 ORACLE_SID=orcl
 export ORACLE_BASE ORACLE_SID
 
 EOF
 
-chown oracle.oinstall /home/oracle/.bash_profile
+chown $ORA_USER.oinstall $USER_HOME/.bash_profile
+
 

@@ -1,6 +1,14 @@
 #!/bin/bash
 
+. settings.sh
+
+#echo ORA USER: $ORA_USER
+
+echo Creating groups
 /usr/sbin/groupadd oinstall
 /usr/sbin/groupadd dba
-/usr/sbin/useradd -g oinstall -G dba oracle
-echo ABcd1234 | passwd --stdin oracle
+
+echo Creating $ORA_USER
+/usr/sbin/useradd -g oinstall -G dba -d $USER_HOME $ORA_USER
+echo $ORA_PASS | passwd --stdin $ORA_USER
+
