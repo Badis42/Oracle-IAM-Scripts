@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. settings.sh
+. `dirname $0`/settings.sh
 
 mkdir $ORADB_LOCATION
 chown -R $ORA_USER:oinstall $ORADB_LOCATION

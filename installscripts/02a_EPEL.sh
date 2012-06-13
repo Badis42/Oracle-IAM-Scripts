@@ -1,6 +1,13 @@
 #!/bin/sh
 
-. osver.sh 
+##############################################################################
+# PLEASE NOTE:                                                               #
+# ------------                                                               #
+# Fedora/CentOS and similar aren't officially supported by Oracle Database   #
+# or Fusion Middleware                                                       #
+##############################################################################
+
+. `dirname $0`/osver.sh
 
 cd /tmp
 

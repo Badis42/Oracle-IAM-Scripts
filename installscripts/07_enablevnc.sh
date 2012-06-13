@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. settings.sh
+. `dirname $0`/settings.sh
 
 echo VNC Password: $VNC_PASS
 echo Oracle user: $ORA_USER

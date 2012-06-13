@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# load settings
-. settings.sh
+. `dirname $0`/settings.sh
 
 # need to determine whether we're on OEL5 or OEL6
-. osver.sh
+. `dirname $0`/osver.sh
 
 if [ "$OS_VER" == "5" ]; then
     echo The oracle-validated package takes care of MOST of this for you

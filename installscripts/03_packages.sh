@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # need to determine whether we're on OEL5 or OEL6
-. osver.sh
+. `dirname $0`/osver.sh
 
 #upgrade any packages
 yum -y update

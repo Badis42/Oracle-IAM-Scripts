@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. osver.sh
+. `dirname $0`/osver.sh
 
 cd /etc/yum.repos.d
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. settings.sh
+. `dirname $0`/settings.sh
 
 #echo ORA USER: $ORA_USER
 
