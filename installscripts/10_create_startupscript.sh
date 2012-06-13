@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. settings.sh
+. `dirname $0`/settings.sh
 
 echo "Updating /etc/oratab"
 cp -p /etc/oratab /etc/oratab.bak
