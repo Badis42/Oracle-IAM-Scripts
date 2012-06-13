@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. settings.sh
+. `dirname $0`/settings.sh
 
 ORAENV_ASK=NO
 ORACLE_SID=orcl
