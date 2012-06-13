@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-. osver.sh
+. `dirname $0`/osver.sh
 
 if [ "$OS_VER" == "5" ]; then
     echo "On OEL 5 oracle-validated already took care of all of this stuff."
