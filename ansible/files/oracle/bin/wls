@@ -1,0 +1,60 @@
+#!/bin/bash
+# 
+usage() {
+  echo "Starts/stops a weblogic admin server or a managed server instance"
+  echo "To start/stop a domain:"
+  echo "Usage: $0 [start|stop] admin_domain_name"
+  echo "To start/stop a managed server :"
+  echo "Usage: $0 [start|stop] admin_domain_name managed_server_name"
+  echo "example: wls start OAMDomain"
+  echo "example: wls start OAMDomain oam_server1"
+  exit 1
+}
+
+if [ $# -lt 2 ];
+then
+	usage
+fi
+
+
+source ~/bin/env.sh
+
+# Domain target dir
+T=$MW_HOME/user_projects/domains/$2
+
+if [ ! -d $T ]; then 
+  echo "Domain directory does not exist: $T"
+  usage
+fi
+
+# Admin server startup 
+case "$1" in 
+start) 
+# No third arg - so must be Admin server
+if [ $# -eq 2 ];
+then
+  echo -n "Starting WLS Admin server $2 with nohup :" 
+  nohup $T/bin/startWebLogic.sh &>/dev/null </dev/null &
+  echo "try tail -f $T/servers/AdminServer/logs/AdminServer.log"
+else
+  echo "Starting managed server $3 with nohup" 
+  nohup $T/bin/startManagedWebLogic.sh $3 &>/dev/null </dev/null &
+  echo "try tail -f $T/servers/$3/logs/$3-diagnostic.log"
+fi
+;;
+
+stop)
+if [ $# -eq 2 ];
+then
+  echo -n "Stopping WLS admin server $2"
+  $T/bin/stopWebLogic.sh 
+else
+  echo "Stopping managed weblogic server $3"
+  $T/bin/stopManagedWebLogic.sh $3
+fi
+;;
+
+*) 
+usage 
+esac
+

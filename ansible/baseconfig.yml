@@ -1,0 +1,50 @@
+---
+# Assumes OEL 6 
+- name: Playbook to run as root to set up base image 
+  hosts: demo
+  user: root
+  vars_files:
+    - vars/env.yml
+
+  tasks:
+  - name: create Oracle groups and user 
+    action: group name=dba
+  - action: group name=admin
+  - action: group name=oinstall
+  - action: group name=vboxsf
+  - action: user name=oracle createhome=yes groups=dba,admin,oinstall,vboxsf home=$oracleuser_home
+# Install packages needed for RDBMS, FMW, VirtualBox 
+  - name: install package list
+    action: yum pkg=$item
+    only_if:  '0'
+    with_items:
+      - kernel
+      - kernel-devel
+      - kernel-headers
+      - kernel-uek
+      - kernel-uek-devel
+      - kernel-uek-headers
+      - glibc
+      - unixODBC
+      - unixODBC-devel
+      - gcc
+      - libaio
+      - libaio-devel
+      - libstdc++-devel
+      - elfutils-libelf-devel
+      - compat-libstdc++-33
+      - oracle-rdbms-server-11gR2-preinstall
+      - tigervnc-server
+  - action: copy src=files/root/etc/init.d/$item  dest=/etc/init.d/$item mode=0755 
+    with_items:
+      - updatehosts
+      - oracle 
+  - action: lineinfile destfile=/etc/sysconfig/vncservers state=present regexp="2:oracle" value='VNCSERVERS="2:oracle"' insertafter=EOF
+  - action: lineinfile destfile=/etc/sysconfig/vncservers state=present regexp="^\[2\]" value='VNCSERVERARGS[2]="-geometry 1024x768"' insertafter=EOF
+  - action: service name=oracle enabled=yes state=started
+  - action: service name=updatehosts enabled=yes state=started 
+  - action: service name=vncserver enabled=yes state=started 
+
+#  - include: tasks/vbox-ext.yml
+#  - name: Reboot for new kernel to take effect 
+#    action: command /sbin/shutdown -r now 

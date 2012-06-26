@@ -1,0 +1,38 @@
+#!/bin/sh
+# Script to finish the install /config of a webgate 
+. ~oracle/bin/env.sh
+#
+
+usage() {
+  echo "Usage $0 ohs_instance"
+  echo "Example:  $0 ohs1"
+  exit 1
+} 
+
+if [ $# -ne 1 ] ; then 
+  usage
+fi
+
+
+WT=$MW_HOME/Oracle_WT1
+WG=$MW_HOME/Oracle_OAMWebGate1
+INSTANCE=$WT/instances/instance1/config/OHS/$1
+
+if [ ! -d $INSTANCE ]; then 
+  echo "Instance directory does not exist!"
+  echo "You may have to edit this script"
+  usage
+fi 
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$WT/lib
+
+cd $WG/webgate/ohs/tools/deployWebGate
+
+./deployWebGateInstance.sh  -oh $WG -w $INSTANCE
+
+cd $WG/webgate/ohs/tools/setup/InstallTools
+
+./EditHttpConf -oh $WG -w $INSTANCE
+
+echo "To finish you must copy your OAM Webgate config files to the instance directory. Example:"
+echo  "cp $MW_HOME/user_projects/domains/IAM/output/$1/* $INSTANCE/webgate/config"

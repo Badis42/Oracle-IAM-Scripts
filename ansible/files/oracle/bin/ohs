@@ -1,0 +1,45 @@
+#!/bin/bash
+# 
+# Todo: fix up argument handling. 
+usage() {
+  echo "Starts/stop OHS instance"
+  echo "Usage: $0 [start|stop|status] ohsinstance"
+  echo "example: $0 start ohs1"
+  exit 1
+}
+
+if [ $# -lt 1 ];
+then
+	usage
+fi
+
+
+source ~/bin/env.sh
+
+T="$MW_HOME/Oracle_WT1/instances/instance1"
+OP=$T/bin/opmnctl
+OHS=$2
+
+
+if [ ! -d $T ]; then 
+  echo "OHS directory does not exist: $T"
+  usage
+fi
+
+# 
+case "$1" in 
+start) 
+	$OP start
+	$OP startproc ias-component=$OHS
+;;
+stop)
+	$OP stopproc ias-component=$OHS
+;;
+status)
+	$OP status -l
+;;
+*) 
+usage 
+esac
+
+
