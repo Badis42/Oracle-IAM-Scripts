@@ -13,6 +13,10 @@
   - action: group name=oinstall
   - action: group name=vboxsf
   - action: user name=oracle createhome=yes groups=dba,admin,oinstall,vboxsf home=$oracleuser_home
+
+  - name: Install EPEL Repo
+    action: command rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-7.noarch.rpm
+
 # Install packages needed for RDBMS, FMW, VirtualBox 
   - name: install package list
     action: yum pkg=$item
@@ -35,6 +39,13 @@
       - compat-libstdc++-33
       - oracle-rdbms-server-11gR2-preinstall
       - tigervnc-server
+# These last three needed by the FMW OIF installer. These are the 32bit libs
+      - glibc-devel.i686
+      - libgcc.i686
+      - libstdc++-devel.i686
+# From EPEL repo
+      - python-argparse
+
   - action: copy src=files/root/etc/init.d/$item  dest=/etc/init.d/$item mode=0755 
     with_items:
       - updatehosts

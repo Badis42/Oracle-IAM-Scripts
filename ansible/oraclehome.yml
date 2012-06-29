@@ -19,7 +19,7 @@
       - wls
       - webgateconfig
       - ohs
-      - oampolicyexport
+      - oam-policy-export
 
 # Other things to do:
 # yum repos
