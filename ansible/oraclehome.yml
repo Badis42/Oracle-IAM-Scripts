@@ -1,6 +1,6 @@
 ---
 - name: Setup Oracle home dir and environment
-  hosts: demo
+  hosts: osc
   users: oracle
   vars_files:
     - vars/env.yml

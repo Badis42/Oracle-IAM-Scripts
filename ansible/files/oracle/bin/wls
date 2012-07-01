@@ -69,9 +69,9 @@ def doStart():
 
 def doStop():
   if args.instance:
-    wlscmd(args.domain, 'stopManagedWebLogic.sh ' + args.instance)
+    wlscmd('stopManagedWebLogic.sh ' + args.instance)
   else:
-    wlscmd(args.domain, 'stopWebLogic.sh')
+    wlscmd('stopWebLogic.sh')
 
 def doSetPassword():
   if args.instance: 
