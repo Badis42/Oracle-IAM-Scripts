@@ -1,0 +1,17 @@
+#!/bin/sh
+# Zero out   blocks so the file system will compress for 
+# distributing VBox or VMWare images
+
+blocks=`df -P ~oracle | sed -n 2p  | awk  '{print $3}'`
+
+# Subtract a few blocks so we don't panic
+tozero=`expr $blocks - 10000`
+
+echo "free blocks $blocks - to be zeroed $tozero"
+
+echo "Creating a big zero filled file. This will take a long time"
+dd if=/dev/zero of=~oracle/deleteME count=$tozero conv=excl bs=1M
+
+rm ~oracle/deleteME
+
+echo "removed file. Shutdown and compress the image !"
