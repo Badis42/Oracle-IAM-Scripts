@@ -1,20 +1,20 @@
 #!/bin/bash
 
 . `dirname $0`/settings.sh
+. `dirname $0`/utils.sh
 
-if [ "$USER" == "" ]; then
-    echo Could not determine user identity.
-    exit 1
-elif [ "$USER" == "root" ]; then
-    echo "STOP!"
-    echo "You are supposed to unzip the database installer and install it"
-    echo "either by hand or with this script"
-    exit
-elif [ "$USER" != "$ORA_USER" ]; then
-    echo "STOP!"
-    echo "You should be running this as $ORA_USER"
-fi
 
+check_not_root
+
+check_workspace
+
+# PRODUCTDIR is where we'll find the unzipped Disk1/runinstaller
+PRODUCTDIR=database
+PRODUCTZIPS=linux.x64_11gR2_database_*
+
+prep_productbits
+
+goto_runinstaller_location
 
 TEMPFILE=/tmp/$$.rsp
 
@@ -74,5 +74,4 @@ AUTOUPDATES_MYORACLESUPPORT_USERNAME=
 AUTOUPDATES_MYORACLESUPPORT_PASSWORD=
 EOF
 
-#~cmjohnso/installers/ss3-refresh/DB/Disk1/runInstaller -silent -responseFile $TEMPFILE
-$INSTALLER_LOCATION/$VERSION_TO_INSTALL/DB/Disk1/runInstaller -silent -responseFile $TEMPFILE -waitforcompletion
+./runInstaller -silent -responseFile $TEMPFILE -waitforcompletion

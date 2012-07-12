@@ -17,6 +17,11 @@ elif [ "$OSVERNUM" == "6.2" ]; then
     echo "Running on version 6 update 2"
     OS_VER=6
     OS_UPDATE=2
+elif [ "$OSVERNUM" == "6.3" ]; then
+    echo "Running on version 6 update 3"
+    OS_VER=6
+    OS_UPDATE=3
 else
   echo "Update the osver.sh script please."
+  exit
 fi
