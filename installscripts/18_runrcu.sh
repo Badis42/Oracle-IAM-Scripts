@@ -32,15 +32,29 @@ COMPONENTS=(MDS SOAINFRA OID OIF OIM OPAM OAM OAAM APM IAU OPSS ORASDPM)
 NUMPASSWORDS=14
 
 
-
+# OK, good to go
 
 NUMCOMPONENTS=${#COMPONENTS[@]}
-echo Operating on $NUMCOMPONENTS schemas
+#echo Operating on $NUMCOMPONENTS schemas
 
 for (( i=0; i<${NUMCOMPONENTS}; i++ ));
 do
     RCUARG="$RCUARG -component ${COMPONENTS[$i]}"
 done
+
+
+# should we drop the existing schema?
+echo Drop the existing schemas?
+#echo  Y or N and press return
+read -p "Press Y or N" -n 1 DROPSCHEMAS
+if [ "Y" == "$DROPSCHEMAS" ] || [ "y" == "$DROPSCHEMAS" ]; then
+    # drop
+    echo Dropping existing repositories.
+    echo If those repositories do not exist, you will have an error message, but that\'s OK.
+    echo $ORA_PASS > $TEMPFILE
+    ./rcu -silent -dropRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX -f $TEMPFILE $RCUARG < $TEMPFILE
+    rm -rf $TEMPFILE
+fi
 
 for (( i=0; i<${NUMPASSWORDS}; i++ ));
 do
@@ -48,15 +62,11 @@ do
 done
 wc -l $TEMPFILE
 
-echo RCU component arg: $RCUARG
+#echo RCU component arg: $RCUARG
 
-# drop
-#echo Dropping existing repositories.
-#echo If those repositories do not exist, you will have an error message, but that\'s OK.
-#./rcu -silent -dropRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX -f $TEMPFILE $RCUARG < $TEMPFILE
-
+echo Running RCU to create schemas
 # create
-#./rcu -silent -createRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX -f $TEMPFILE $RCUARG < $TEMPFILE
-./rcu -silent -createRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX $RCUARG < $TEMPFILE
+./rcu -silent -createRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX -f $TEMPFILE $RCUARG < $TEMPFILE
+#./rcu -silent -createRepository -connectString $CONNECT_STRING -dbUser sys -dbRole sysdba -lockSchemas false -schemaPrefix $SCHEMA_PREFIX $RCUARG < $TEMPFILE
 
 rm -f $TEMPFILE

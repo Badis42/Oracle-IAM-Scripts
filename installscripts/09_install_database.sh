@@ -9,6 +9,7 @@ elif [ "$USER" == "root" ]; then
     echo "STOP!"
     echo "You are supposed to unzip the database installer and install it"
     echo "either by hand or with this script"
+    exit
 elif [ "$USER" != "$ORA_USER" ]; then
     echo "STOP!"
     echo "You should be running this as $ORA_USER"
@@ -74,4 +75,4 @@ AUTOUPDATES_MYORACLESUPPORT_PASSWORD=
 EOF
 
 #~cmjohnso/installers/ss3-refresh/DB/Disk1/runInstaller -silent -responseFile $TEMPFILE
-$INSTALLER_LOCATION/$VERSION_TO_INSTALL/DB/Disk1/runInstaller -silent -responseFile $TEMPFILE
+$INSTALLER_LOCATION/$VERSION_TO_INSTALL/DB/Disk1/runInstaller -silent -responseFile $TEMPFILE -waitforcompletion
