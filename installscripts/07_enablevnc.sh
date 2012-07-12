@@ -18,7 +18,7 @@ else
 fi
 
 if [ -e /etc/sysconfig/vncservers.bak ]; then
-    echo /etc/hsysconfig/vncservers already exists
+    echo /etc/sysconfig/vncservers already exists
     ls -l /etc/sysconfig/vncservers*
     exit
 fi
