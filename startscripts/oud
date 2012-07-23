@@ -51,19 +51,19 @@ search()
     echo "Searching directory."
     echo "  base: $SEARCHBASE"
     echo "string: $SEARCHSTRING"
-    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $SEARCHBASE $SEARCHSTRING
+    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $SEARCHBASE $SEARCHSTRING
 }
 
 modify()
 {
     echo "Executing LDAP modify"
-    ldapmodify -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -a -c
+    ldapmodify -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -a -c
 }
 
 ldapping()
 {
     echo "Searching LDAP directory"
-    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -x -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $DIRBASE $DIRADMINDN dn
+    ldapsearch -h $DIRLISTENHOST -p $DIRLISTENPORT -D "$DIRADMINDN" -w "$DIRADMINPASSWORD" -b $DIRBASE $DIRADMINDN dn
     ret=$?
     
     if [ "$ret" -ne "0" ]; then
@@ -74,6 +74,9 @@ ldapping()
     return $ret
 }
 
+if [ "" == "$USER" ]; then
+    USER=`whoami`
+fi
 
 if [ "$USER" == "root" ] ; then
     # if we're running as root we will need to su to stop or start the server
@@ -119,14 +122,18 @@ unregister() {
 
 case "${1}" in
 start)
+  #echo SUCOMMAND is $SUCOMMAND
+  echo Starting OUD
   $SUCOMMAND "${INSTALL_ROOT}/bin/start-ds" --quiet
   exit ${?}
   ;;
 stop)
+  echo Stopping OUD
   $SUCOMMAND "${INSTALL_ROOT}/bin/stop-ds" --quiet
   exit ${?}
   ;;
 restart)
+  echo Restarting OUD
   $SUCOMMAND "${INSTALL_ROOT}/bin/stop-ds" --restart --quiet
   exit ${?}
   ;;
