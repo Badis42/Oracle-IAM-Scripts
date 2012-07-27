@@ -1,0 +1,13 @@
+#!/bin/sh
+
+
+source ~/bin/env.sh
+
+echo "Policies will be exported to /tmp/oam_policy.xml"
+
+$MW_HOME/Oracle_IDM1/common/bin/wlst.sh <<EOF
+connect('weblogic','Oracle123','t3://localhost:7001')
+importPolicy(pathTempOAMPolicyFile='/app/oracle/oam_policy.xml')
+EOF
+
+

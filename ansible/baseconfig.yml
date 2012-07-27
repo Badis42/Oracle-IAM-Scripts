@@ -7,23 +7,19 @@
     - vars/env.yml
 
   tasks:
-  - name: create Oracle groups and user 
-    action: group name=dba
-  - action: group name=admin
-  - action: group name=oinstall
-  - action: group name=vboxsf
-# Note that post install oracle may get moved to /app/oracle as part of the DSS/Demo standard
-# This will create a home dir that can be used for the initial setup
-#  - action: user name=oracle createhome=yes groups=dba,admin,oinstall,vboxsf home=$oracleuser_home
-# Create demo home, paths, etc. 
-  - action: file dest=$demo_root state=directory
-  - action: file dest=$demo_home state=directory owner=oracle
-  - action: file dest=$demo_home/users state=directory owner=oracle
-  - action: file dest=/app/oracle/product state=directory owner=oracle
-  - action: file dest=$mw_home state=directory owner=oracle
-  - action: file dest=$oracle_home state=directory
+# Tip: For development comment out any long running task you are not interested in.
+
+# Create oracle home, groups, etc.
+#  - include: tasks/oraclehome.yml
+
 # Install all yum packages
-  - include: tasks/yum.yml
+#  - include: tasks/yum.yml
+
+# optional - set git proxy 
+  - action: shell git config --global http.proxy $http_proxy
+    only_if: '"$http_proxy"'
+# Pull scripts from github
+  - action: git repo=https://github.com/Oracle-IAM/Oracle-IAM-Scripts.git dest=/var/tmp/scripts
 
 
 # Copy init files 
@@ -31,9 +27,6 @@
     with_items:
       - updatehosts
       - oracle 
-#  - action: lineinfile destfile=/etc/sysconfig/vncservers state=present regexp="2:oracle" value='VNCSERVERS="2:oracle"' insertafter=EOF
-#  - action: lineinfile destfile=/etc/sysconfig/vncservers state=present regexp="^\[2\]" value='VNCSERVERARGS[2]="-geometry 1024x768"' insertafter=EOF
-#  - action: lineinfile destfile=/etc/sysconfig/vncservers state=present regexp="^\[2\]" value='VNCSERVERARGS[2]="-geometry 1024x768"' insertafter=EOF
 # Enable services
   - action: service name=oracle enabled=yes state=started
 #  - action: service name=updatehosts enabled=yes state=started 

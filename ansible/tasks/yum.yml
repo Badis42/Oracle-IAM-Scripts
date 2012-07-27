@@ -30,5 +30,6 @@
     - libstdc++-devel.i686
 # From EPEL repo
     - python-argparse
+    - git
 # For BTRFS support
     - btrfs-progs
