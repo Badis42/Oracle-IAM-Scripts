@@ -33,3 +33,9 @@
     - git
 # For BTRFS support
     - btrfs-progs
+
+- name: Remove unwanted packages
+  action: yum pkg=$item state=removed
+  with_items:
+    - java-1.6.0-openjdk
+    - java-1.5.0-gcj
